@@ -1,3 +1,4 @@
+package nl.marijnvanzelst.axon.rummikub;
 
 public class Run {
 
