@@ -33,6 +33,10 @@ public class Game extends AbstractAnnotatedAggregateRoot {
 
     private Set<String> playersFinished = new HashSet<>();
 
+    // Required by Axon
+    public Game() {
+    }
+
     @CommandHandler
     public Game(CreateGameCommand command) {
        apply(new GameCreatedEvent(command.getGameId()));
@@ -54,9 +58,10 @@ public class Game extends AbstractAnnotatedAggregateRoot {
         if(players.size() < 2){
             throw new IllegalStateException("Not enough players");
         }
-        List<Tile> stack = GameEngine.getShuffledStack();
+        List<Tile> stack = command.getStack();
         Board board = GameEngine.getNewBoard(stack, players);
-        apply(new GameStartedEvent(this.id, board, stack, players));
+        String nextPlayer = players.first();
+        apply(new GameStartedEvent(this.id, board, stack, players, nextPlayer));
     }
 
     @CommandHandler
@@ -100,9 +105,9 @@ public class Game extends AbstractAnnotatedAggregateRoot {
         apply(new TileSetsPlayedEvent(command.getGameId(), command.getPlayer(), command.getTileSets(), getNextPlayer(), newBoard));
         if(newBoard.getTilesByPlayer().get(command.getPlayer()).isEmpty()){
             apply(new PlayerFinishedEvent(command.getGameId(), command.getPlayer()));
-        }
-        if(getUnfinishedPlayers().size() == 1){
-            apply(new GameFinishedEvent(command.getGameId()));
+            if(getUnfinishedPlayers().size() == 1){
+                apply(new GameFinishedEvent(command.getGameId()));
+            }
         }
     }
 
@@ -120,7 +125,7 @@ public class Game extends AbstractAnnotatedAggregateRoot {
     public void on(GameStartedEvent event) {
         this.gameState = GameState.STARTED;
         this.board = event.getBoard();
-        this.playerOnTurn = event.getPlayers().stream().findFirst().get();
+        this.playerOnTurn = event.getNextPlayer();
         this.stack = event.getStack();
     }
 
@@ -134,6 +139,7 @@ public class Game extends AbstractAnnotatedAggregateRoot {
     public void on(TileSetsPlayedEvent event) {
         this.board = event.getNewBoard();
         this.playerOnTurn = event.getNextPlayer();
+        this.playersPastFirstMove.add(event.getPlayer());
     }
 
     @EventSourcingHandler

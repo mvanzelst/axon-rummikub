@@ -61,4 +61,23 @@ public class Board {
         newTilesByPlayer.get(player).add(tile);
         return new Board(new ArrayList<>(boardSets), newTilesByPlayer);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Board board = (Board) o;
+
+        if (!boardSets.equals(board.boardSets)) return false;
+        return tilesByPlayer.equals(board.tilesByPlayer);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = boardSets.hashCode();
+        result = 31 * result + tilesByPlayer.hashCode();
+        return result;
+    }
 }

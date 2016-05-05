@@ -18,7 +18,7 @@ public class GameEngine {
         players.forEach(player -> {
             List<Tile> playerTiles = new ArrayList<>();
             for (int i = 0; i < 13; i++) {
-                playerTiles.add(stack.remove(i));
+                playerTiles.add(stack.remove(0));
             }
             tilesByPlayer.put(player, playerTiles);
         });
