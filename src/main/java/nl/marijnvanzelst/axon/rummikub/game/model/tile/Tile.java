@@ -1,10 +1,5 @@
 package nl.marijnvanzelst.axon.rummikub.game.model.tile;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 public enum Tile {
 
     ONE_RED(Color.RED, 1, false, 0),
@@ -86,34 +81,5 @@ public enum Tile {
 
     public boolean isJoker() {
         return joker;
-    }
-
-    public Optional<Tile> getNext(){
-        return Tile.getTile(this.color, this.number + 1);
-    }
-
-    public static List<Tile> sort(List<Tile> tiles){
-        return tiles.stream()
-                .sorted((t1, t2) -> t1.order - t2.order)
-                .collect(Collectors.toList());
-    }
-
-    public boolean atSamePosition(Tile tile){
-        if(tile.isJoker() || this.isJoker()){
-            return true;
-        }
-        if(tile.getColor() == this.getColor() && tile.getNumber().equals(this.getNumber())){
-            return true;
-        }
-        return false;
-    }
-
-    public static Optional<Tile> getTile(Color color, Integer number){
-        return Arrays.asList(Tile.values()).stream()
-                .filter(tile -> !tile.isJoker())
-                .filter(tile -> tile.getNumber().equals(number))
-                .filter(tile -> tile.getColor() == color)
-                .findFirst();
-
     }
 }

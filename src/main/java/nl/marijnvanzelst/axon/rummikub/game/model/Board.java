@@ -1,23 +1,64 @@
 package nl.marijnvanzelst.axon.rummikub.game.model;
 
-import nl.marijnvanzelst.axon.rummikub.game.model.tile.TileGroup;
+import nl.marijnvanzelst.axon.rummikub.game.model.tile.Tile;
+import nl.marijnvanzelst.axon.rummikub.game.model.tile.TileSet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Board {
 
-    private final List<TileGroup> tileGroups;
+    private final List<TileSet> boardSets;
 
-    public Board(List<TileGroup> tileGroups) {
-        this.tileGroups = new ArrayList<>(tileGroups);
+    private final Map<String, List<Tile>> tilesByPlayer;
+
+    public Board(List<TileSet> boardSets, Map<String, List<Tile>> tilesByPlayer) {
+        this.boardSets = new ArrayList<>(boardSets);
+        this.tilesByPlayer = new HashMap<>(tilesByPlayer);
     }
 
-    public List<TileGroup> getTileGroups() {
-        return new ArrayList<>(tileGroups);
+    public Board addTileSet(String player, TileSet tileSet){
+        verifyAddTileSet(player, tileSet);
+
+        Map<String, List<Tile>> newTilesByPlayer = new HashMap<>(tilesByPlayer);
+        List<Tile> newPlayerTiles = newTilesByPlayer.get(player);
+        tileSet.getTiles().forEach(tile -> newPlayerTiles.remove(tile));
+
+        List<TileSet> newBoardSets = new ArrayList<>(boardSets);
+        newBoardSets.add(tileSet);
+
+        return new Board(newBoardSets, newTilesByPlayer);
     }
 
-    public Board addTileGroup(TileGroup tileGroup){
-        return null;
+    private void verifyAddTileSet(String player, TileSet tileSet){
+        if(!tileSet.isComplete()){
+            throw new IllegalArgumentException("Incomplete tileset");
+        }
+        if(!tilesByPlayer.containsKey(player)){
+            throw new IllegalArgumentException("Unknown player");
+        }
+        List<Tile> playerTiles = tilesByPlayer.get(tilesByPlayer);
+        if(!playerTiles.containsAll(tileSet.getTiles())){
+            throw new IllegalStateException("Player is not in possession of all tiles");
+        }
+    }
+
+    public List<TileSet> getBoardSets() {
+        return new ArrayList<>(boardSets);
+    }
+
+    public Map<String, List<Tile>> getTilesByPlayer() {
+        return new HashMap<>(tilesByPlayer);
+    }
+
+    public Board giveTile(String player, Tile tile) {
+        if(!tilesByPlayer.containsKey(player)){
+            throw new IllegalArgumentException("Unknown player");
+        }
+        Map<String, List<Tile>> newTilesByPlayer = new HashMap<>(tilesByPlayer);
+        newTilesByPlayer.get(player).add(tile);
+        return new Board(new ArrayList<>(boardSets), newTilesByPlayer);
     }
 }
