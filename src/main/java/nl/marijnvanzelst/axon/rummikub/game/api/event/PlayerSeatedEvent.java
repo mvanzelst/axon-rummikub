@@ -1,17 +1,14 @@
-package nl.marijnvanzelst.axon.rummikub.game.api;
-
-import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
+package nl.marijnvanzelst.axon.rummikub.game.api.event;
 
 import java.util.UUID;
 
-public class SeatPlayerCommand {
+public class PlayerSeatedEvent {
 
-    @TargetAggregateIdentifier
     private final UUID gameId;
 
     private final String playerName;
 
-    public SeatPlayerCommand(UUID gameId, String playerName) {
+    public PlayerSeatedEvent(UUID gameId, String playerName) {
         this.gameId = gameId;
         this.playerName = playerName;
     }

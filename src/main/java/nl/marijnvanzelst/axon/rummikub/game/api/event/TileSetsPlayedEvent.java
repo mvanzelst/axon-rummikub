@@ -1,4 +1,4 @@
-package nl.marijnvanzelst.axon.rummikub.game.api;
+package nl.marijnvanzelst.axon.rummikub.game.api.event;
 
 import nl.marijnvanzelst.axon.rummikub.game.model.Board;
 import nl.marijnvanzelst.axon.rummikub.game.model.tile.TileSet;

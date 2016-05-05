@@ -1,6 +1,8 @@
 package nl.marijnvanzelst.axon.rummikub.game.api;
 
 import nl.marijnvanzelst.axon.rummikub.game.GameEngine;
+import nl.marijnvanzelst.axon.rummikub.game.api.command.*;
+import nl.marijnvanzelst.axon.rummikub.game.api.event.*;
 import nl.marijnvanzelst.axon.rummikub.game.model.Board;
 import nl.marijnvanzelst.axon.rummikub.game.model.GameState;
 import nl.marijnvanzelst.axon.rummikub.game.model.tile.Tile;
@@ -14,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Game extends AbstractAnnotatedAggregateRoot {
+public class Game extends AbstractAnnotatedAggregateRoot<UUID> {
 
     @AggregateIdentifier
     private UUID id;

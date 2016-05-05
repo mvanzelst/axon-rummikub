@@ -1,6 +1,10 @@
 package nl.marijnvanzelst.axon.rummikub.game.api;
 
 import nl.marijnvanzelst.axon.rummikub.game.GameEngine;
+import nl.marijnvanzelst.axon.rummikub.game.api.command.StartGameCommand;
+import nl.marijnvanzelst.axon.rummikub.game.api.event.GameCreatedEvent;
+import nl.marijnvanzelst.axon.rummikub.game.api.event.GameStartedEvent;
+import nl.marijnvanzelst.axon.rummikub.game.api.event.PlayerSeatedEvent;
 import nl.marijnvanzelst.axon.rummikub.game.model.Board;
 import nl.marijnvanzelst.axon.rummikub.game.model.tile.Tile;
 import org.axonframework.test.FixtureConfiguration;

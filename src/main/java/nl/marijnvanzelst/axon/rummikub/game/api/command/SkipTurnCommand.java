@@ -1,13 +1,14 @@
-package nl.marijnvanzelst.axon.rummikub.game.api;
+package nl.marijnvanzelst.axon.rummikub.game.api.command;
 
 import java.util.UUID;
 
-public class PlayerFinishedEvent {
+public class SkipTurnCommand {
 
     private final UUID gameId;
+
     private final String player;
 
-    public PlayerFinishedEvent(UUID gameId, String player) {
+    public SkipTurnCommand(UUID gameId, String player) {
         this.gameId = gameId;
         this.player = player;
     }
