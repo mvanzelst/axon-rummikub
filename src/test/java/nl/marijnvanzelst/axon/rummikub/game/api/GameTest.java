@@ -26,9 +26,10 @@ public class GameTest {
         List<String> playerList = Arrays.asList("player1", "player2");
         TreeSet<String> players = new TreeSet<>(playerList);
         UUID gameId = UUID.randomUUID();
+
         fixture.given(new GameCreatedEvent(gameId),
-                        new PlayerSeatedEvent(gameId, playerList.get(0)),
-                        new PlayerSeatedEvent(gameId, playerList.get(1)))
+                      new PlayerSeatedEvent(gameId, playerList.get(0)),
+                      new PlayerSeatedEvent(gameId, playerList.get(1)))
                 .when(new StartGameCommand(gameId, stack))
                 .expectPublishedEvents(new GameStartedEvent(
                         gameId,

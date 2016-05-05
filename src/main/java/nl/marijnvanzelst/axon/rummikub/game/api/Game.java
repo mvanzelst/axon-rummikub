@@ -58,6 +58,9 @@ public class Game extends AbstractAnnotatedAggregateRoot {
         if(players.size() < 2){
             throw new IllegalStateException("Not enough players");
         }
+        if(players.size() > 4){
+            throw new IllegalStateException("Too many players");
+        }
         List<Tile> stack = command.getStack();
         Board board = GameEngine.getNewBoard(stack, players);
         String nextPlayer = players.first();
