@@ -82,7 +82,7 @@ public class Game extends AbstractAnnotatedAggregateRoot<UUID> {
         }
         List<Tile> newStack = new ArrayList<>(stack);
         Board newBoard = board.giveTile(command.getPlayer(), newStack.remove(0));
-        apply(new TurnSkippedEvent(command.getGameId(), command.getPlayer(), getNextPlayer(), newBoard));
+        apply(new TurnSkippedEvent(command.getGameId(), command.getPlayer(), getNextPlayer(), newBoard, newStack));
     }
 
     @CommandHandler
@@ -138,6 +138,7 @@ public class Game extends AbstractAnnotatedAggregateRoot<UUID> {
     public void on(TurnSkippedEvent event) {
         this.board = event.getNewBoard();
         this.playerOnTurn = event.getNextPlayer();
+        this.stack = event.getNewStack();
     }
 
     @EventSourcingHandler
@@ -169,7 +170,7 @@ public class Game extends AbstractAnnotatedAggregateRoot<UUID> {
             throw new IllegalStateException("All players finished");
         }
         int nextPlayerIndex = unfinishedPlayers.indexOf(playerOnTurn) + 1;
-        if(unfinishedPlayers.size() - 1 > nextPlayerIndex){
+        if(unfinishedPlayers.size() - 1 >= nextPlayerIndex){
             return unfinishedPlayers.get(nextPlayerIndex);
         } else {
             return unfinishedPlayers.get(0);

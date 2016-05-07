@@ -1,6 +1,7 @@
 package nl.marijnvanzelst.axon.rummikub.game.api.command;
 
 import nl.marijnvanzelst.axon.rummikub.game.model.tile.TileSet;
+import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 public class PlayTileSetsCommand {
 
+    @TargetAggregateIdentifier
     private final UUID gameId;
 
     private final String player;
